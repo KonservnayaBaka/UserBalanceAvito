@@ -20,6 +20,63 @@ func InitializeRoutes(r *gin.Engine, db *gorm.DB) {
 		authGroup.POST("/registration", registrationNewUser(db))
 		authGroup.GET("/authorization", authorizationUser(db))
 	}
+	productGroup := r.Group("/product")
+	{
+		productGroup.POST("/add", addProduct(db))
+		productGroup.POST("/reservation", reservProduct(db))
+	}
+}
+
+func reservProduct(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userID := c.GetHeader("UserID")
+		productID := c.GetHeader("ProductID")
+		ammountCount := c.GetHeader("Ammount")
+
+		var reservation models.Reservation
+
+		userIDParse, err := strconv.ParseInt(userID, 10, 64)
+		if err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+		}
+		productIDParse, err := strconv.ParseInt(productID, 10, 64)
+		if err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+		}
+		ammountCountParse, err := strconv.ParseInt(ammountCount, 10, 64)
+		if err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+		}
+
+		reservation.AccountID = uint(userIDParse)
+		reservation.ProductID = uint(productIDParse)
+		reservation.Amount = int(ammountCountParse)
+
+		c.JSON(200, gin.H{"reservation": reservation})
+	}
+}
+
+func addProduct(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var product models.Product
+
+		if err := c.ShouldBind(&product); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+
+		if product.Name == "" {
+			c.JSON(400, gin.H{"error": "product name is empty"})
+			return
+		}
+
+		if err := db.Create(&product).Error; err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(200, gin.H{"product": product})
+	}
 }
 
 func registrationNewUser(db *gorm.DB) gin.HandlerFunc {
