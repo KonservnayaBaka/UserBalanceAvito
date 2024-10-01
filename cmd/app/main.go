@@ -5,7 +5,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"userBalanceAvito/internal/models"
-	"userBalanceAvito/internal/transport"
+	"userBalanceAvito/internal/routes"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 		panic("failed to migrate database")
 	}
 
-	transport.InitializeRoutes(r, db)
+	routes.InitializeRoutes(r, db)
 
 	r.Run("localhost:8000")
 }
