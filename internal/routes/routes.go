@@ -17,7 +17,7 @@ func InitializeRoutes(r *gin.Engine, db *gorm.DB) {
 	authGroup := r.Group("/auth")
 	{
 		authGroup.POST("/registration", handlers.RegistrationNewUser(db))
-		authGroup.GET("/authorization", handlers.AuthorizationUser(db))
+		authGroup.GET("/login", handlers.AuthorizationUser(db))
 	}
 	productGroup := r.Group("/product")
 	{
