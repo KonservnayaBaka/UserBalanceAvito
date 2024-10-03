@@ -1,4 +1,4 @@
-package handlers
+package tests
 
 import (
 	"bytes"
@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"userBalanceAvito/internal/handlers"
 	"userBalanceAvito/internal/models"
 	"userBalanceAvito/internal/utils"
 )
@@ -34,7 +35,7 @@ func createTestRequest(method, url string, body interface{}) (*http.Request, *ht
 func TestRegistrationNewUser(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.POST("/auth/registration", RegistrationNewUser(db))
+	router.POST("/auth/registration", handlers.RegistrationNewUser(db))
 
 	user := models.User{
 		Username: "testusername",
@@ -56,7 +57,7 @@ func TestRegistrationNewUser(t *testing.T) {
 func TestAuthorizationUser(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.POST("/auth/login", AuthorizationUser(db))
+	router.POST("/auth/login", handlers.AuthorizationUser(db))
 
 	hashedPassword, _ := utils.HashPassword("testpassword")
 	testUser := models.User{
@@ -85,7 +86,7 @@ func TestAuthorizationUser(t *testing.T) {
 func TestRegistrationNewUserEmptyData(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.POST("/auth/registration", RegistrationNewUser(db))
+	router.POST("/auth/registration", handlers.RegistrationNewUser(db))
 
 	user := models.User{
 		Username: "",
@@ -106,7 +107,7 @@ func TestRegistrationNewUserEmptyData(t *testing.T) {
 func TestAuthorizationUserInvalidData(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.POST("/auth/login", AuthorizationUser(db))
+	router.POST("/auth/login", handlers.AuthorizationUser(db))
 
 	user := models.User{
 		Username: "invalidusername",

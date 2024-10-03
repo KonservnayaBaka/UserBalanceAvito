@@ -1,4 +1,4 @@
-package handlers
+package tests
 
 import (
 	"encoding/json"
@@ -6,13 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+	"userBalanceAvito/internal/handlers"
 	"userBalanceAvito/internal/models"
 )
 
 func TestCreateOperations(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.POST("/operations/create", CreateOperations(db))
+	router.POST("/operations/create", handlers.CreateOperations(db))
 
 	account := models.Account{
 		Balance: 0,
@@ -43,7 +44,7 @@ func TestCreateOperations(t *testing.T) {
 func TestCreateOperationsMissingFields(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.POST("/operations/create", CreateOperations(db))
+	router.POST("/operations/create", handlers.CreateOperations(db))
 
 	operation := models.Operation{
 		AccountID:     0,

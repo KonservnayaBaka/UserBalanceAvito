@@ -1,4 +1,4 @@
-package handlers
+package tests
 
 import (
 	"bytes"
@@ -9,13 +9,14 @@ import (
 	"net/http/httptest"
 	"strconv"
 	"testing"
+	"userBalanceAvito/internal/handlers"
 	"userBalanceAvito/internal/models"
 )
 
 func TestAddProduct(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.POST("/product/add", AddProduct(db))
+	router.POST("/product/add", handlers.AddProduct(db))
 
 	product := models.Product{
 		Name: "Iphone 13",
@@ -42,7 +43,7 @@ func TestAddProduct(t *testing.T) {
 func TestAddReservation(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.POST("/product/reservation", ReservProduct(db))
+	router.POST("/product/reservation", handlers.ReservProduct(db))
 
 	account := models.Account{}
 	db.Create(&account)

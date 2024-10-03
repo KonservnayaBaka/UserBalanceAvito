@@ -11,7 +11,7 @@ import (
 func main() {
 	r := gin.Default()
 
-	dsn := "host=localhost user=postgres password=90814263 dbname=userBalanceAvito port=1488 sslmode=disable"
+	dsn := "host=localhost user=postgres password=90814263 dbname=userBalanceAvito port=5432 sslmode=disable"
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

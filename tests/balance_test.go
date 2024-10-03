@@ -1,4 +1,4 @@
-package handlers
+package tests
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"strconv"
 	"testing"
+	"userBalanceAvito/internal/handlers"
 	"userBalanceAvito/internal/models"
 )
 
@@ -21,7 +22,7 @@ func createTestWithHeaderRequest(method, url string, headers map[string]string) 
 func TestEnrollmentBalance(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.PUT("/balance/enrollment", EnrollmentBalance(db))
+	router.PUT("/balance/enrollment", handlers.EnrollmentBalance(db))
 
 	account := models.Account{
 		Balance: 0,
@@ -49,7 +50,7 @@ func TestEnrollmentBalance(t *testing.T) {
 func TestWriteOffBalance(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.PUT("/balance/off", WriteOffBalance(db))
+	router.PUT("/balance/off", handlers.WriteOffBalance(db))
 
 	account := models.Account{
 		Balance: 1500,
@@ -77,7 +78,7 @@ func TestWriteOffBalance(t *testing.T) {
 func TestTransferBalance(t *testing.T) {
 	db := setupTestDB()
 	router := gin.Default()
-	router.PUT("/balance/transfer", TransferBalance(db))
+	router.PUT("/balance/transfer", handlers.TransferBalance(db))
 
 	account1 := models.Account{
 		Balance: 1000,
